@@ -1,25 +1,34 @@
-package cat.login;
+package Free.login;
 
 import java.awt.Button;
+
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
+import javax.swing.*;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 
-public class CatReset extends JFrame {
+public class FreeReset extends JFrame {
+	
+	private static String host = "localhost";
+	
 	private JTextField textField;
 	private JTextField textField_1;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField_1;
-	
+	private JPanel contentPane;
 	private final static String deny_Nick = "NoNickName";
 	private final static String deny_Pwd = "WrongPwd";
 	private final static String admit = "Yes";
@@ -29,7 +38,21 @@ public class CatReset extends JFrame {
 	private final static String resetSuccess = "修改密码成功！";
 	private final static String wa = "The answer is wrong!";
 	
-	public CatReset() {
+	
+	public FreeReset() {
+		
+		contentPane = new JPanel() {
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(new ImageIcon(
+						"images/reset/reset.jpg").getImage(), 0,
+						0, getWidth(), getHeight(), null);
+			}
+		};
+		
+		this.setContentPane(contentPane);
 		setForeground(Color.ORANGE);
 		setBounds(350, 250, 350, 417);
 		setResizable(false);
@@ -38,38 +61,26 @@ public class CatReset extends JFrame {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JLabel label = new JLabel("\u8D26\u53F7\u540D\u79F0\uFF1A");
-		label.setBounds(31, 34, 87, 15);
-		getContentPane().add(label);
-		
 		textField = new JTextField();
-		textField.setBounds(147, 31, 66, 21);
+		textField.setBounds(158, 89, 66, 31);
 		getContentPane().add(textField);
 		textField.setColumns(10);
-		
-		final JLabel lblNewLabel = new JLabel("\u7236\u4EB2\u59D3\u540D\uFF1A");
-		lblNewLabel.setBounds(31, 89, 76, 15);
-		getContentPane().add(lblNewLabel);
+		textField.setOpaque(false);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(147, 86, 66, 21);
+		textField_1.setBounds(158, 139, 66, 31);
 		getContentPane().add(textField_1);
 		textField_1.setColumns(10);
-		
-		JLabel label_1 = new JLabel("\u65B0\u5BC6\u7801\uFF1A");
-		label_1.setBounds(31, 151, 54, 15);
-		getContentPane().add(label_1);
+		textField_1.setOpaque(false);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(147, 148, 125, 21);
+		passwordField.setBounds(158, 190, 125, 31);
+		passwordField.setOpaque(false);
 		getContentPane().add(passwordField);
 		
-		JLabel lblNewLabel_1 = new JLabel("\u786E\u8BA4\u5BC6\u7801\uFF1A");
-		lblNewLabel_1.setBounds(31, 224, 76, 15);
-		getContentPane().add(lblNewLabel_1);
-		
 		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(147, 221, 125, 21);
+		passwordField_1.setBounds(158, 242, 125, 31);
+		passwordField_1.setOpaque(false);
 		getContentPane().add(passwordField_1);
 		
 		final JLabel lblNewLabel_2 = new JLabel("");
@@ -78,7 +89,8 @@ public class CatReset extends JFrame {
 		getContentPane().add(lblNewLabel_2);
 		
 		
-		Button button = new Button("\u786E\u8BA4");
+		JButton button = new JButton("\u786E\u8BA4");
+		button.setActionCommand("");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -115,7 +127,7 @@ public class CatReset extends JFrame {
 							e1.printStackTrace();
 						}
 						
-						CatLogin cl = new CatLogin();
+						FreeLogin cl = new FreeLogin();
 						cl.setVisible(true);
 						setVisible(false);
 					}//else
@@ -126,12 +138,13 @@ public class CatReset extends JFrame {
 		getContentPane().add(button);
 		
 		
-		final Button button_1 = new Button("\u8FD4\u56DE");
+		final JButton button_1 = new JButton("");
+		button_1.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\register\\return.jpg"));
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				button_1.setEnabled(false);
 				//返回登陆界面 原来的那个 Catlogin 对象不用了 创建一个新的
-				CatLogin frame = new CatLogin();
+				FreeLogin frame = new FreeLogin();
 				frame.setVisible(true);
 				setVisible(false);
 			}
@@ -157,7 +170,7 @@ public class CatReset extends JFrame {
 		toAccountServer += "mode=3=";
 		toAccountServer += (u_father);
 		try {
-			Socket s = new Socket("localhost", 8000);
+			Socket s = new Socket(host, 8000);
 			DataInputStream dis = new DataInputStream(s.getInputStream());
 			DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 			

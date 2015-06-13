@@ -1,4 +1,4 @@
-package cat.login;
+package Free.login;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -21,14 +21,15 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import cat.client.CatChatroom;
-import cat.client.UserList;
-import cat.function.CatBean;
-import cat.function.ClientBean;
-import cat.util.CatUtil;
+import Free.client.CatChatroom;
+import Free.client.UserList;
+import Free.function.FreeBean;
+import Free.function.ClientBean;
+import Free.util.FreeUtil;
 
-public class CatLogin extends JFrame {
+public class FreeLogin extends JFrame {
 
+	private static String host = "localhost";
 	
 	private JPanel contentPane;				//在JPanel 上放入component
 	private JTextField textField;			//账号
@@ -50,7 +51,7 @@ public class CatLogin extends JFrame {
 			public void run() {
 				try {
 					// 启动登陆界面
-					CatLogin frame = new CatLogin();
+					FreeLogin frame = new FreeLogin();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +63,7 @@ public class CatLogin extends JFrame {
 	/**
 	 * Create the Login frame.
 	 */
-	public CatLogin() {
+	public FreeLogin() {
 		setTitle("Landing cat chat room\n");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(350, 250, 450, 300);
@@ -85,7 +86,7 @@ public class CatLogin extends JFrame {
 		
 		//将 账号、密码域 放在contentPanel 上
 		textField = new JTextField();
-		textField.setBounds(128, 153, 104, 21);
+		textField.setBounds(136, 22, 120, 25);
 		textField.setOpaque(false);
 		contentPane.add(textField);
 		textField.setColumns(10);
@@ -94,19 +95,19 @@ public class CatLogin extends JFrame {
 		passwordField.setForeground(Color.BLACK);
 		passwordField.setEchoChar('*');
 		passwordField.setOpaque(false);
-		passwordField.setBounds(128, 189, 104, 21);
+		passwordField.setBounds(136, 64, 120, 25);
 		contentPane.add(passwordField);
 		
 		//登录 注册按钮
 		final JButton btnNewButton = new JButton();
-		btnNewButton.setIcon(new ImageIcon("images\\\u767B\u9646.jpg"));
-		btnNewButton.setBounds(246, 227, 50, 25);
+		btnNewButton.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\LoginIamge1_2\\\u767B\u5F551_2.jpg"));
+		btnNewButton.setBounds(321, 22, 70, 25);
 		getRootPane().setDefaultButton(btnNewButton);
 		contentPane.add(btnNewButton);
 
 		final JButton btnNewButton_1 = new JButton();
-		btnNewButton_1.setIcon(new ImageIcon("images\\\u6CE8\u518C.jpg"));
-		btnNewButton_1.setBounds(317, 227, 50, 25);
+		btnNewButton_1.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\LoginIamge1_2\\\u6CE8\u518C1_2.jpg"));
+		btnNewButton_1.setBounds(321, 66, 70, 25);
 		contentPane.add(btnNewButton_1);
 
 		// 提示信息
@@ -115,16 +116,17 @@ public class CatLogin extends JFrame {
 		lblNewLabel.setForeground(Color.red);
 		getContentPane().add(lblNewLabel);
 		
-		final JButton btnNewButton_2 = new JButton("\u5FD8\u8BB0\u5BC6\u7801\uFF1F");
+		final JButton btnNewButton_2 = new JButton("");
+		btnNewButton_2.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\LoginIamge1_2\\\u5FD8\u8BB0\u5BC6\u78011_2.jpg"));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnNewButton_2.setEnabled(false);
-				CatReset cr = new CatReset();
+				FreeReset cr = new FreeReset();
 				cr.setVisible(true);
 				setVisible(false);
 			}
 		});
-		btnNewButton_2.setBounds(274, 114, 93, 23);
+		btnNewButton_2.setBounds(136, 111, 100, 25);
 		contentPane.add(btnNewButton_2);
 
 		// 监听登陆按钮
@@ -151,7 +153,7 @@ public class CatLogin extends JFrame {
 				String ans = null;
 				
 				try {
-					Socket s = new Socket("localhost",8000);
+					Socket s = new Socket(host,8000);
 					DataInputStream dis = new DataInputStream(s.getInputStream());
 					DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 					dos.writeUTF(toAccountServer);
@@ -172,7 +174,7 @@ public class CatLogin extends JFrame {
 					{
 						//使用套接字连接到 本机服务器
 						try {
-							Socket client = new Socket("localhost", 8520);
+							Socket client = new Socket(host, 8520);
 
 							btnNewButton.setEnabled(false);
 							//CatChatroom frame = new CatChatroom(u_name,
@@ -219,7 +221,7 @@ public class CatLogin extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnNewButton_1.setEnabled(false);
-				CatResign frame = new CatResign();
+				FreeRegister frame = new FreeRegister();
 				frame.setVisible(true);// 显示注册界面
 				setVisible(false);// 使用外部类 隐藏掉登陆界面
 			}

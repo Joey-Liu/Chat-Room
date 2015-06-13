@@ -1,4 +1,4 @@
-package cat.client;
+package Free.client;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -59,11 +59,12 @@ import javax.swing.border.TitledBorder;
 
 import java.util.*;
 
+import Free.client.CatChatroom.ClientInputThread;
+import Free.function.FreeBean;
+
 import com.sun.javafx.collections.MappingChange.Map;
 
-import cat.client.CatChatroom.ClientInputThread;
-import cat.function.CatBean;
-import cat.util.CatUtil;
+import Free.util.FreeUtil;
 
 
 public class UserList extends JFrame 
@@ -89,8 +90,7 @@ public class UserList extends JFrame
 	
 	
 	//用户 与 未读消息队列 Map
-	static HashMap<String, Queue<CatBean> > MessageMap = new HashMap<String, Queue<CatBean> >();
-	
+	static HashMap<String, Queue<FreeBean> > MessageMap = new HashMap<String, Queue<FreeBean> >();
 	//as you can see
 	public final static String UnRead = " 未读消息";
 	public final static String OffLine = " 已下线";
@@ -124,7 +124,18 @@ public class UserList extends JFrame
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(200, 100, 282, 451);
-		contentPane = new JPanel();
+		contentPane = new JPanel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(new ImageIcon(
+						"images/UserList.jpg").getImage(), 0,
+						0, getWidth(), getHeight(), null);
+			}
+		};
+		contentPane.setOpaque(false);
 		this.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -184,10 +195,10 @@ public class UserList extends JFrame
 		try {
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			// 记录上线客户的信息在catbean中，并发送给服务器
-			CatBean bean = new CatBean();
+			FreeBean bean = new FreeBean();
 			bean.setType(0);
 			bean.setName(name);
-			bean.setTimer(CatUtil.getTimer());
+			bean.setTimer(FreeUtil.getTimer());
 			oos.writeObject(bean);
 			oos.flush();
 
@@ -220,7 +231,10 @@ public class UserList extends JFrame
 					{
 						if(friend.equals(ChatBoxes.get(i).getFriend()) )
 						{
+							if(ChatBoxes.get(i).getExtendedState() == JFrame.ICONIFIED)
+								ChatBoxes.get(i).setExtendedState(JFrame.NORMAL);
 							ChatBoxes.get(i).toFront();
+							ChatBoxes.get(i).setLocation(200, 200);
 							return;
 						}
 					}
@@ -243,7 +257,7 @@ public class UserList extends JFrame
 						
 						if(flag)
 						{
-							Queue<CatBean> qc = MessageMap.get(friend);
+							Queue<FreeBean> qc = MessageMap.get(friend);
 							while(!qc.isEmpty())
 								cBox.getBean(qc.poll());
 						}
@@ -261,10 +275,10 @@ public class UserList extends JFrame
 						ChatBoxes.add(cBox);
 						cBox.setVisible(true);
 						
-						Queue<CatBean> qc = MessageMap.get(friend);
-						CatBean cb = new CatBean();
+						Queue<FreeBean> qc = MessageMap.get(friend);
+						FreeBean cb = new FreeBean();
 						cb.setType(1);
-						cb.setTimer(CatUtil.getTimer());
+						cb.setTimer(FreeUtil.getTimer());
 						cb.setName("系统消息");
 						cb.setInfo("该用户此时可能已经下线，你所发送的信息可能不会被对方接收到");
 						qc.offer(cb);
@@ -303,10 +317,10 @@ public class UserList extends JFrame
 					int result = JOptionPane.showConfirmDialog(this.getContentPane(), "确定要退出聊天室吗?");
 					if(0 == result)
 					{
-						CatBean clientBean = new CatBean();
+						FreeBean clientBean = new FreeBean();
 						clientBean.setType(-1);
 						clientBean.setName(name);
-						clientBean.setTimer(CatUtil.getTimer());
+						clientBean.setTimer(FreeUtil.getTimer());
 						sendMessage(clientBean);
 						
 						//关闭用户的socket 加上这些后服务器端各种报错
@@ -325,7 +339,7 @@ public class UserList extends JFrame
 				}
 	}//private void processWindowEvent
 
-	private void sendMessage(CatBean clientBean) {
+	private void sendMessage(FreeBean clientBean) {
 		try {
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			oos.writeObject(clientBean);
@@ -357,7 +371,7 @@ public class UserList extends JFrame
 				// 不停的从服务器接收信息
 				while (true) {
 					ois = new ObjectInputStream(clientSocket.getInputStream());
-					final CatBean  bean = (CatBean) ois.readObject();
+					final FreeBean  bean = (FreeBean) ois.readObject();
 					switch (bean.getType()) {
 					case 0: {									//有人上线
 						// 更新列表
@@ -408,8 +422,8 @@ public class UserList extends JFrame
 							{
 								ChatBoxes.get(i).setUse(true);
 								
-								CatBean cb = new CatBean();
-								String time = CatUtil.getTimer();
+								FreeBean cb = new FreeBean();
+								String time = FreeUtil.getTimer();
 								cb.setTimer(time);	//设置时间戳
 								cb.setType(1);
 								cb.setInfo("对方已经上线");
@@ -478,12 +492,12 @@ public class UserList extends JFrame
 							 */
 							if(MessageMap.containsKey(from))
 							{
-								Queue<CatBean> qc = MessageMap.get(from);
+								Queue<FreeBean> qc = MessageMap.get(from);
 								qc.offer(bean);
 							}
 							else
 							{
-								Queue<CatBean> qc = new LinkedList<CatBean>();
+								Queue<FreeBean> qc = new LinkedList<FreeBean>();
 								qc.offer(bean);
 								MessageMap.put(from, qc);
 							}
@@ -502,8 +516,8 @@ public class UserList extends JFrame
 							{
 								flag = true;
 								
-								CatBean cb = new CatBean();
-								String time = CatUtil.getTimer();
+								FreeBean cb = new FreeBean();
+								String time = FreeUtil.getTimer();
 								cb.setTimer(time);	//设置时间戳
 								cb.setType(1);
 								cb.setInfo("对方已经下线，之后发送的消息对方将将无法接收,你未发送出的文件已经被取消");
@@ -557,12 +571,12 @@ public class UserList extends JFrame
 							 */
 							if(MessageMap.containsKey(from))
 							{
-								Queue<CatBean> qc = MessageMap.get(from);
+								Queue<FreeBean> qc = MessageMap.get(from);
 								qc.offer(bean);
 							}
 							else
 							{
-								Queue<CatBean> qc = new LinkedList<CatBean>();
+								Queue<FreeBean> qc = new LinkedList<FreeBean>();
 								qc.offer(bean);
 								MessageMap.put(from, qc);
 							}

@@ -1,10 +1,10 @@
-package cat.function;
+package Free.function;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class CatBean implements Serializable {
+public class FreeBean implements Serializable {
 	private int type; // 1私聊 0上下线更新 -1下线请求 2请求发送文件 3.确定接收文件4.取消接收文件
 
 	private HashSet<String> clients; // 存放选中的客户

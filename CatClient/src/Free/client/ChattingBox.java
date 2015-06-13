@@ -1,4 +1,4 @@
-package cat.client;
+package Free.client;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -54,12 +54,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import cat.function.CatBean;
-import cat.util.CatUtil;
+import Free.function.FreeBean;
 
 import java.awt.Label;
 
 import javax.swing.JTable;
+
+import Free.util.FreeUtil;
 
 public class ChattingBox extends JFrame {
 
@@ -155,7 +156,7 @@ public class ChattingBox extends JFrame {
 			e1.printStackTrace();
 		}
 
-		setTitle(friend);
+		setTitle("与" + friend + "聊天中");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(200, 100, 688, 510);
@@ -206,7 +207,7 @@ public class ChattingBox extends JFrame {
 		scrollPane_2.setViewportView(lblNewLabel_1);
 
 		// 关闭按钮
-		final JButton btnNewButton = new JButton("SendFile");
+		final JButton btnNewButton = new JButton("\u53D1\u9001\u6587\u4EF6");
 		btnNewButton.setBounds(239, 448, 100, 30);
 		getContentPane().add(btnNewButton);
 
@@ -236,7 +237,7 @@ public class ChattingBox extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String info = textArea_1.getText();
-				CatBean infoBean = new CatBean();		//聊天信息infoBean
+				FreeBean infoBean = new FreeBean();		//聊天信息infoBean
 				
 				if (info.equals("")) {
 					JOptionPane.showMessageDialog(getContentPane(), "不能发送空信息");
@@ -246,7 +247,7 @@ public class ChattingBox extends JFrame {
 			
 				infoBean.setType(1);		//类型
 				infoBean.setName(name);		//来源
-				String time = CatUtil.getTimer();
+				String time = FreeUtil.getTimer();
 				infoBean.setTimer(time);	//设置时间戳
 				infoBean.setInfo(info);			//设置聊天信息
 				HashSet<String > set = new HashSet<String >();
@@ -283,10 +284,10 @@ public class ChattingBox extends JFrame {
 				return;
 			}
 			
-			CatBean clientBean = new CatBean();
+			FreeBean clientBean = new FreeBean();
 			clientBean.setType(2);
 			clientBean.setName(name);
-			clientBean.setTimer(CatUtil.getTimer());
+			clientBean.setTimer(FreeUtil.getTimer());
 			clientBean.setFileName(file.getName());
 			clientBean.setInfo("请求发送文件");
 			double __size = (double) file.length();
@@ -334,7 +335,7 @@ public class ChattingBox extends JFrame {
 		}
 	}
 
-	private void sendMessage(CatBean clientBean) {
+	private void sendMessage(FreeBean clientBean) {
 		try {
 			if (!friend.equals(UserList.GroupChat)) {
 				oos = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -355,7 +356,7 @@ public class ChattingBox extends JFrame {
 	}
 	
 	//对话框得到bean之后采取的动作
-	public void getBean(final CatBean cBean)
+	public void getBean(final FreeBean cBean)
 	{
 		switch(cBean.getType())
 		{
@@ -385,10 +386,10 @@ public class ChattingBox extends JFrame {
 						String saveFilePath =chooser.getSelectedFile().toString();
 					
 						//创建客户CatBean
-						CatBean clientBean = new CatBean();
+						FreeBean clientBean = new FreeBean();
 						clientBean.setType(3);				//确定接收文件
 						clientBean.setName(name);  //接收文件的客户名字
-						clientBean.setTimer(CatUtil.getTimer());
+						clientBean.setTimer(FreeUtil.getTimer());
 						clientBean.setFileName(saveFilePath);
 						clientBean.setInfo("确定接收文件");
 
@@ -413,7 +414,7 @@ public class ChattingBox extends JFrame {
 							isReceiveFile=true;
 							//等待文件来源的客户，输送文件....目标客户从网络上读取文件，并写在本地上
 							Socket sk = ss.accept();
-                            textArea.append(CatUtil.getTimer() + "  " + cBean.getFileName()
+                            textArea.append(FreeUtil.getTimer() + "  " + cBean.getFileName()
 									+ "文件保存中.\r\n");
 							DataInputStream dis = new DataInputStream(  //从网络上读取文件
 									new BufferedInputStream(sk.getInputStream()));
@@ -448,7 +449,7 @@ public class ChattingBox extends JFrame {
 							
 							//给文件来源客户发条提示，文件保存完毕
 							PrintWriter out = new PrintWriter(sk.getOutputStream(),true);
-							out.println(CatUtil.getTimer() + " 发送给"+name+"的文件[" + cBean.getFileName()+"]"
+							out.println(FreeUtil.getTimer() + " 发送给"+name+"的文件[" + cBean.getFileName()+"]"
 									+ "文件保存完毕.\r\n");
 							out.flush();
 							dos.flush();
@@ -457,7 +458,7 @@ public class ChattingBox extends JFrame {
 							dis.close();
 							sk.close();
 							ss.close();
-							textArea.append(CatUtil.getTimer() + "  " + cBean.getFileName()
+							textArea.append(FreeUtil.getTimer() + "  " + cBean.getFileName()
 									+ "文件保存完毕.存放位置为:"+saveFilePath+"\r\n");
 							isReceiveFile = false;
 						} catch (Exception e) {
@@ -468,12 +469,12 @@ public class ChattingBox extends JFrame {
 						break;
 					}
 					default: {		//点击 "否" 或者 "取消" 
-						CatBean clientBean = new CatBean();
+						FreeBean clientBean = new FreeBean();
 						clientBean.setType(4);
 						clientBean.setName(name);  //接收文件的客户名字
-						clientBean.setTimer(CatUtil.getTimer());
+						clientBean.setTimer(FreeUtil.getTimer());
 						clientBean.setFileName(cBean.getFileName());
-						clientBean.setInfo(CatUtil.getTimer() + "  "
+						clientBean.setInfo(FreeUtil.getTimer() + "  "
 								+ name + "取消接收文件["
 								+ cBean.getFileName() + "]");
 

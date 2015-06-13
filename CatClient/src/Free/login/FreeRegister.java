@@ -1,4 +1,4 @@
-package cat.login;
+package Free.login;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,10 +12,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JOptionPane;
 
 import jdk.internal.org.objectweb.asm.util.Textifiable;
-import cat.util.CatUtil;
+import Free.util.FreeUtil;
 
 // resign 在这表示 注册用户类,应该是register
-public class CatResign extends JFrame {
+public class FreeRegister extends JFrame {
+	
+	private static String host = new String("localhost");
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -30,7 +32,7 @@ public class CatResign extends JFrame {
 	private final String illegal = "命名不合法";
 	private JTextField textField_1;
 	////////////////////////////////////////////////////
-	public CatResign() {
+	public FreeRegister() {
 		setTitle("Registered cat chat room\n");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(350, 250, 450, 300);
@@ -40,7 +42,7 @@ public class CatResign extends JFrame {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("images\\\u6CE8\u518C\u754C\u9762.jpg").getImage(), 0,0, getWidth(), getHeight(), null);
+				g.drawImage(new ImageIcon("images/register/boundary.jpg").getImage(), 0,0, getWidth(), getHeight(), null);
 			}
 		};
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -48,7 +50,7 @@ public class CatResign extends JFrame {
 		contentPane.setLayout(null);
 
 		textField = new JTextField();
-		textField.setBounds(150, 42, 104, 21);
+		textField.setBounds(175, 91, 104, 20);
 		textField.setOpaque(false);
 		contentPane.add(textField);
 		textField.setColumns(10);
@@ -56,49 +58,45 @@ public class CatResign extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setEchoChar('*');
 		passwordField.setOpaque(false);
-		passwordField.setBounds(192, 95, 104, 21);
+		passwordField.setBounds(175, 122, 104, 20);
 		contentPane.add(passwordField);
 
 		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(192, 143, 104, 21);
+		passwordField_1.setBounds(175, 155, 104, 20);
 		passwordField_1.setOpaque(false);
 		contentPane.add(passwordField_1);
 
 		//注册按钮
 		final JButton btnNewButton_1 = new JButton();
-		btnNewButton_1.setIcon(new ImageIcon("images\\注册1.jpg"));
-		btnNewButton_1.setBounds(320, 198, 80, 40);
+		btnNewButton_1.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\LoginIamge1_2\\\u6CE8\u518C1_2.jpg"));
+		btnNewButton_1.setBounds(335, 109, 80, 33);
 		getRootPane().setDefaultButton(btnNewButton_1);
 		contentPane.add(btnNewButton_1);
 
 		//返回按钮
 		final JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon("images\\返回.jpg"));
-		btnNewButton.setBounds(230, 198, 80, 40);
+		btnNewButton.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\register\\return.jpg"));
+		btnNewButton.setBounds(335, 157, 80, 33);
 		contentPane.add(btnNewButton);
 
 		//提示信息
 		lblNewLabel = new JLabel();
-		lblNewLabel.setBounds(55, 218, 185, 20);
+		lblNewLabel.setBounds(230, 232, 185, 20);
 		lblNewLabel.setForeground(Color.red);
 		contentPane.add(lblNewLabel);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(192, 174, 66, 21);
+		textField_1.setBounds(175, 189, 104, 20);
 		textField_1.setOpaque(false);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
-		
-		JLabel label = new JLabel("\u7236\u4EB2\u59D3\u540D");
-		label.setBounds(54, 177, 66, 15);
-		contentPane.add(label);
 		
 		//返回按钮监听
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnNewButton.setEnabled(false);
 				//返回登陆界面 原来的那个 Catlogin 对象不用了 创建一个新的
-				CatLogin frame = new CatLogin();
+				FreeLogin frame = new FreeLogin();
 				frame.setVisible(true);
 				setVisible(false);
 			}
@@ -132,7 +130,7 @@ public class CatResign extends JFrame {
 								"information", JOptionPane.INFORMATION_MESSAGE);
 
 
-						CatLogin frame = new CatLogin();
+						FreeLogin frame = new FreeLogin();
 						frame.setVisible(true);
 						setVisible(false);
 					}
@@ -148,6 +146,10 @@ public class CatResign extends JFrame {
 					{
 						lblNewLabel.setText("密码不能为空");
 					}
+					else if(-4 == res)
+					{
+						lblNewLabel.setText("用户名包含非法字符");
+					}
 				} 
 				else 
 				{
@@ -156,12 +158,14 @@ public class CatResign extends JFrame {
 			}
 
 			
-			//使用Properties 对象存储用户名与密码
-			//函数 执行成功 （即成功地将账号 密码 存入 服务器端）返回1 
-			//否则 用户名已注册 返回 -1
-			//   两次密码不一致返回 -2
-			//	 密码为空 返回 -3
-			//  出现异常 返回 100
+			/**使用Properties 对象存储用户名与密码
+			 *	函数 执行成功 （即成功地将账号 密码 存入 服务器端）返回1 
+			*	否则 用户名已注册 返回 -1
+			*	  两次密码不一致返回 -2
+			*		 密码为空 返回 -3
+			*		包含非法字符 返回 -4
+				出现异常 返回 100
+			*/  
 			private int isPassword(String u_name, String u_pwd, String u_pwd_ag, String u_father) {
 				if (u_pwd.equals(u_pwd_ag)) {
 					if (u_pwd.length() != 0) {		//密码有效
@@ -175,7 +179,7 @@ public class CatResign extends JFrame {
 						try {
 							/*userPro.store(new FileOutputStream(file),
 									"Copyright (c) Boxcode Studio,Improved by xdu");*/
-							Socket s = new Socket("localhost",8000);
+							Socket s = new Socket(host,8000);
 							DataInputStream dis = new DataInputStream(s.getInputStream());
 							DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 							dos.writeUTF(toAccountServer);
@@ -189,6 +193,10 @@ public class CatResign extends JFrame {
 								dos.flush();
 								s.close();
 								return 1;
+							}
+							else if(ans.equals(illegal))	//用户名包含非法字符
+							{
+								return -4;
 							}
 							else						//该用户名 已存在
 							{

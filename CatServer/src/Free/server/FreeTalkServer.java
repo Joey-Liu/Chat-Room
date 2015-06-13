@@ -1,4 +1,4 @@
-package cat.server;
+package Free.server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,8 +12,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 
-import cat.function.CatBean;
-import cat.function.ClientBean;
+
+import Free.function.FreeBean;
+import Free.function.ClientBean;
 
 
 //端口8520
@@ -34,7 +35,7 @@ public class FreeTalkServer {
 	//处理 客户端请求 线程
 	class CatClientThread extends Thread {
 		private Socket client;
-		private CatBean bean;
+		private FreeBean bean;
 		private ObjectInputStream ois;
 		private ObjectOutputStream oos;
 
@@ -49,7 +50,7 @@ public class FreeTalkServer {
 				while (true) {
 					// 读取从客户端接收到的catbean信息					
 					ois = new ObjectInputStream(client.getInputStream());
-					bean = (CatBean)ois.readObject();
+					bean = (FreeBean)ois.readObject();
 					
 					// 分析catbean中，type是那样一种类型
 					switch (bean.getType()) {
@@ -62,7 +63,7 @@ public class FreeTalkServer {
 						// 添加在线用户			！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 						onlines.put(bean.getName(), cbean);
 						// 创建服务器的catbean，并发送给客户端
-						CatBean serverBean = new CatBean();
+						FreeBean serverBean = new FreeBean();
 						serverBean.setType(0);
 						serverBean.setInfo(bean.getTimer() + "  "
 								+ bean.getName() + "上线了");
@@ -76,7 +77,7 @@ public class FreeTalkServer {
 					}
 					case -1: { // 下线
 						// 创建服务器的catbean，并发送给客户端
-						CatBean serverBean = new CatBean();
+						FreeBean serverBean = new FreeBean();
 						serverBean.setType(-1);
 
 						try {
@@ -92,7 +93,7 @@ public class FreeTalkServer {
 						onlines.remove(bean.getName());
 
 						// 向剩下的在线用户发送有人离开的通知	这个地方 现将 bean类型设置为 0提示各个用户更新列表，之后设置为-1类型 以文字方式 提醒 正在聊天的用户
-						CatBean serverBean2 = new CatBean();
+						FreeBean serverBean2 = new FreeBean();
 						serverBean2.setInfo(bean.getTimer() + "  "
 								+ bean.getName() + " " + " 下线了");
 						serverBean2.setType(0);
@@ -112,7 +113,7 @@ public class FreeTalkServer {
 					case 1: { // 聊天
 						
 						//创建服务器的catbean，并发送给客户端
-						CatBean serverBean = new CatBean();
+						FreeBean serverBean = new FreeBean();
 						
 						serverBean.setType(1);
 						serverBean.setClients(bean.getClients());
@@ -125,7 +126,7 @@ public class FreeTalkServer {
 					}
 					case 2: { // 有用户请求文件传输
 						// 创建服务器的catbean，并发送给客户端
-						CatBean serverBean = new CatBean();
+						FreeBean serverBean = new FreeBean();
 						String info = bean.getTimer() + "  " + bean.getName()
 								+ "向你传送文件,是否需要接受";
 
@@ -142,7 +143,7 @@ public class FreeTalkServer {
 						break;
 					}
 					case 3: { // 确定接收文件
-						CatBean serverBean = new CatBean();
+						FreeBean serverBean = new FreeBean();
 
 						serverBean.setType(3);
 						serverBean.setClients(bean.getClients()); // 文件来源
@@ -157,7 +158,7 @@ public class FreeTalkServer {
 						break;
 					}
 					case 4: {
-						CatBean serverBean = new CatBean();
+						FreeBean serverBean = new FreeBean();
 
 						serverBean.setType(4);
 						serverBean.setClients(bean.getClients()); // 文件来源
@@ -187,7 +188,7 @@ public class FreeTalkServer {
 		}
 
 		// 向选中的用户发送数据
-		private void sendMessage(CatBean serverBean) {
+		private void sendMessage(FreeBean serverBean) {
 			// 首先取得所有的values
 			Set<String> cbs = onlines.keySet();
 			Iterator<String> it = cbs.iterator();
@@ -215,7 +216,7 @@ public class FreeTalkServer {
 		}
 
 		// 向所有的用户发送数据 与上例十分相似
-		public void sendAll(CatBean serverBean) {
+		public void sendAll(FreeBean serverBean) {
 			Collection<ClientBean> clients = onlines.values();
 			Iterator<ClientBean> it = clients.iterator();
 			ObjectOutputStream oos;

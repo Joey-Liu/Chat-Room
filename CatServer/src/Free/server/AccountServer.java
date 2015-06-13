@@ -1,4 +1,4 @@
-package cat.server;
+package Free.server;
 
 //账号服务期 工作模式：
 //mode = 1 表示 用户使用账号密码登录 
@@ -14,7 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
-import cat.util.*;
+import Free.util.*;
 
 public class AccountServer {
 	private final int port = 8000;		//端口号
@@ -26,6 +26,7 @@ public class AccountServer {
 	private final String illegal = "命名不合法";
 	private final String resetSuccess = "修改密码成功！";
 	private final String wa = "The answer is wrong!";
+	private final String me = "我";
 	private ServerSocket ss;
 	
 	
@@ -87,8 +88,8 @@ public class AccountServer {
 				File file = new File("Users.properties");
 				File father_file = new File("fathers.properties");
 				
-				CatUtil.loadPro(userPro, file);
-				CatUtil.loadPro(fatherPro, father_file);
+				FreeUtil.loadPro(userPro, file);
+				FreeUtil.loadPro(fatherPro, father_file);
 				if(info[3].equals("1"))			//如果是 登录 选项
 				{
 					if(file.length() != 0)
@@ -106,7 +107,7 @@ public class AccountServer {
 					else
 					{
 						dos.writeUTF(deny_Nick);
-					}//else
+					}//else/
 				}// if info[3]=="1"
 				else if(info[3].equals("3")) //重置密码选项
 				{
@@ -147,7 +148,7 @@ public class AccountServer {
 						dos.writeUTF(deny_Nick);
 						dos.flush();
 					}
-					else if(info[0].contains(UnRead) || info[0].contains(OffLine))
+					else if(info[0].contains(UnRead) || info[0].contains(OffLine) || info[0].contains(me))
 					{
 						dos.writeUTF(illegal);
 						dos.flush();

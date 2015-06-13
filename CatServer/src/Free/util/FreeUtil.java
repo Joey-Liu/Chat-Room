@@ -1,4 +1,4 @@
-package cat.util;
+package Free.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-public class CatUtil {
+public class FreeUtil {
 
 	// Properties加载文件信息
 	public static void loadPro(Properties pro, File file) {

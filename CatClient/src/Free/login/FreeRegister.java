@@ -42,7 +42,7 @@ public class FreeRegister extends JFrame {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("images/register/boundary.jpg").getImage(), 0,0, getWidth(), getHeight(), null);
+				g.drawImage(new ImageIcon("images/ultimate/register2.0.jpg").getImage(), 0,0, getWidth(), getHeight(), null);
 			}
 		};
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -50,7 +50,7 @@ public class FreeRegister extends JFrame {
 		contentPane.setLayout(null);
 
 		textField = new JTextField();
-		textField.setBounds(175, 91, 104, 20);
+		textField.setBounds(119, 28, 104, 20);
 		textField.setOpaque(false);
 		contentPane.add(textField);
 		textField.setColumns(10);
@@ -58,25 +58,25 @@ public class FreeRegister extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setEchoChar('*');
 		passwordField.setOpaque(false);
-		passwordField.setBounds(175, 122, 104, 20);
+		passwordField.setBounds(119, 71, 104, 20);
 		contentPane.add(passwordField);
 
 		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(175, 155, 104, 20);
+		passwordField_1.setBounds(119, 115, 104, 20);
 		passwordField_1.setOpaque(false);
 		contentPane.add(passwordField_1);
 
 		//注册按钮
 		final JButton btnNewButton_1 = new JButton();
-		btnNewButton_1.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\LoginIamge1_2\\\u6CE8\u518C1_2.jpg"));
-		btnNewButton_1.setBounds(335, 109, 80, 33);
+		btnNewButton_1.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\ultimate\\register_confirm.jpg"));
+		btnNewButton_1.setBounds(89, 206, 80, 33);
 		getRootPane().setDefaultButton(btnNewButton_1);
 		contentPane.add(btnNewButton_1);
 
 		//返回按钮
 		final JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\register\\return.jpg"));
-		btnNewButton.setBounds(335, 157, 80, 33);
+		btnNewButton.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\ultimate\\register_return.jpg"));
+		btnNewButton.setBounds(203, 206, 80, 33);
 		contentPane.add(btnNewButton);
 
 		//提示信息
@@ -86,7 +86,7 @@ public class FreeRegister extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(175, 189, 104, 20);
+		textField_1.setBounds(119, 161, 104, 20);
 		textField_1.setOpaque(false);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);

@@ -47,7 +47,7 @@ public class FreeReset extends JFrame {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.drawImage(new ImageIcon(
-						"images/reset/reset.jpg").getImage(), 0,
+						"images/ultimate/reset.jpg").getImage(), 0,
 						0, getWidth(), getHeight(), null);
 			}
 		};
@@ -62,24 +62,24 @@ public class FreeReset extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		textField = new JTextField();
-		textField.setBounds(158, 89, 66, 31);
+		textField.setBounds(158, 59, 66, 23);
 		getContentPane().add(textField);
 		textField.setColumns(10);
 		textField.setOpaque(false);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(158, 139, 66, 31);
+		textField_1.setBounds(158, 110, 66, 23);
 		getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 		textField_1.setOpaque(false);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(158, 190, 125, 31);
+		passwordField.setBounds(158, 166, 125, 23);
 		passwordField.setOpaque(false);
 		getContentPane().add(passwordField);
 		
 		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(158, 242, 125, 31);
+		passwordField_1.setBounds(158, 215, 125, 23);
 		passwordField_1.setOpaque(false);
 		getContentPane().add(passwordField_1);
 		
@@ -89,7 +89,8 @@ public class FreeReset extends JFrame {
 		getContentPane().add(lblNewLabel_2);
 		
 		
-		JButton button = new JButton("\u786E\u8BA4");
+		JButton button = new JButton("");
+		button.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\ultimate\\register_confirm.jpg"));
 		button.setActionCommand("");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,7 +118,7 @@ public class FreeReset extends JFrame {
 						lblNewLabel_2.setText("该账号不存在！");
 					else if(-2 == res) 
 						lblNewLabel_2.setText("问题回答错误！");
-					else
+					else if(0 == res)
 					{
 						JOptionPane.showMessageDialog(getParent(), "修改密码成功！");
 						try {
@@ -131,15 +132,20 @@ public class FreeReset extends JFrame {
 						cl.setVisible(true);
 						setVisible(false);
 					}//else
+					else
+					{
+						JOptionPane.showMessageDialog(getParent(), "与服务器链接失败，请稍后再试！", "Error Message",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}//else
 			}
 		});
-		button.setBounds(42, 305, 76, 23);
+		button.setBounds(42, 270, 76, 23);
 		getContentPane().add(button);
 		
 		
 		final JButton button_1 = new JButton("");
-		button_1.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\register\\return.jpg"));
+		button_1.setIcon(new ImageIcon("D:\\Program Files (x86)\\git Repostitory\\CatClient\\images\\ultimate\\register_return.jpg"));
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				button_1.setEnabled(false);
@@ -149,7 +155,7 @@ public class FreeReset extends JFrame {
 				setVisible(false);
 			}
 		});
-		button_1.setBounds(147, 305, 76, 23);
+		button_1.setBounds(42, 315, 76, 23);
 		getContentPane().add(button_1);
 		
 
@@ -159,7 +165,7 @@ public class FreeReset extends JFrame {
 	 * @param u_name 用户名
 	 * @param u_pwd	用户新密码
 	 * @param u_father 用户父亲 姓名
-	 * @return -1：账号不存在 -2：问题回答错误 0：密码充值成功
+	 * @return -1：账号不存在 -2：问题回答错误 0：密码充值成功 -3服务器连接失败
 	 */
 	private static int isReset(String u_name, String u_pwd, String u_father)
 	{
@@ -181,6 +187,7 @@ public class FreeReset extends JFrame {
 			s.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return -3;
 		}
 		
 		if(ans.equals(deny_Nick))//账号错误

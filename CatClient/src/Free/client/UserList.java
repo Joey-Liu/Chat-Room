@@ -157,16 +157,7 @@ public class UserList extends JFrame
 		scrollPane_2.getViewport().setOpaque(false);
 		getContentPane().add(scrollPane_2);
 		
-		JLabel lblNewLabel = new JLabel("\u53D1\u8D77\u7FA4\u804A");
-		lblNewLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-		lblNewLabel.setBounds(10, 398, 118, 17);
-		contentPane.add(lblNewLabel);
-		
-		JButton btnNewButton = new JButton("\u6253\u5F00\u5BF9\u8BDD\u6846");
+		JButton btnNewButton = new JButton("\u6253\u5F00\u901A\u77E5");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<String > to = new LinkedList<String>();
